@@ -1,3 +1,6 @@
+<img width="1318" height="769" alt="image" src="https://github.com/user-attachments/assets/3c57f368-0789-426d-9d7b-712d23f1d69c" />
+
+
 # scan2paperless
 
 Ein schlankes grafisches Scan-Programm für Linux, das über einen SANE-Scanner
