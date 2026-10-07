@@ -146,5 +146,4 @@ aktivieren oder bei einseitigen Dokumenten die Quelle „ADF Front" wählen.
 
 ## Lizenz
 
-Empfohlen: [MIT](https://opensource.org/licenses/MIT) — passende `LICENSE`-Datei
-einfach im Repository ergänzen.
+[MIT](LICENSE).
