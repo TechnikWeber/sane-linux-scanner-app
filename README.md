@@ -1,149 +1,150 @@
-<img width="1318" height="769" alt="image" src="https://github.com/user-attachments/assets/3c57f368-0789-426d-9d7b-712d23f1d69c" />
-
-
 # scan2paperless
 
-Ein schlankes grafisches Scan-Programm für Linux, das über einen SANE-Scanner
-Dokumente einliest, daraus ein PDF erzeugt und es direkt in den
-**Paperless(-ngx)**-Consume-Ordner legt. Entwickelt und getestet mit einem
-**Fujitsu fi-6130**, funktioniert aber mit jedem von SANE unterstützten Scanner.
+<p>
+  <img alt="Platform: Linux" src="https://img.shields.io/badge/platform-Linux-blue">
+  <img alt="Python 3 + Tkinter" src="https://img.shields.io/badge/python-3%20%2B%20Tkinter-informational">
+  <img alt="UI language: German" src="https://img.shields.io/badge/UI-Deutsch-informational">
+  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-green"></a>
+</p>
 
-Das Programm erkennt automatisch, welche Optionen der angeschlossene Scanner
-beherrscht, und blendet nicht unterstützte Funktionen aus.
+A lean graphical scanning app for Linux: it scans documents through any SANE scanner,
+turns them into a PDF and drops it straight into the **Paperless(-ngx)** consume folder.
+Developed and tested with a **Fujitsu fi-6130**, but it works with every scanner SANE
+supports.
 
-> Screenshot: `docs/screenshot.png` (gern ein eigenes Bild hier einfügen)
+The app detects automatically which options the connected scanner offers and hides
+functions it does not support.
 
-## Funktionen
+<img width="1318" height="769" alt="scan2paperless: scanner, target folder, profile and scan settings" src="https://github.com/user-attachments/assets/3c57f368-0789-426d-9d7b-712d23f1d69c" />
 
-- Scannen über den Einzug (Duplex, Vorder- oder Rückseite) oder Flachbett
-- Farbe, Graustufen oder reines Schwarzweiß (Lineart)
-- Automatische Erkennung der Scanner-Fähigkeiten über `scanimage -A`
-- Automatisch zuschneiden, geraderücken, entrauschen und Leerseiten überspringen
-- Seiten drehen (90/180/270°) und Farbscans optional als JPEG komprimieren
-- Profile zum Speichern verschiedener Voreinstellungen
-  (z. B. „Dokument Graustufen" vs. „Farbe Duplex")
-- Dokumentname → wird zum Dateinamen und damit zum Titelvorschlag in Paperless
-- Freies Feld für beliebige zusätzliche `scanimage`-Optionen
-- Startmenü-Eintrag (.desktop) per Klick
+## Features
 
-## Voraussetzungen
+- Scan from the feeder (duplex, front or back) or the flatbed
+- Colour, greyscale or pure black and white (lineart)
+- Detects the scanner's capabilities automatically via `scanimage -A`
+- Automatic cropping, deskewing, despeckling and skipping of blank pages
+- Rotate pages (90/180/270°) and optionally compress colour scans as JPEG
+- Profiles for different presets (e.g. "document greyscale" vs. "colour duplex")
+- Document name → becomes the file name and with that the title suggestion in Paperless
+- Free field for any additional `scanimage` options
+- Start menu entry (.desktop) with one click
 
-- Python 3 mit Tkinter
+The interface is in German.
+
+## Requirements
+
+- Python 3 with Tkinter
 - SANE (`scanimage`)
 - `img2pdf`
-- ImageMagick — nur nötig, wenn gedreht oder komprimiert wird
+- ImageMagick — only needed for rotating or compressing
 
 ## Installation
 
-### Fedora
+**Fedora**
 
 ```bash
 sudo dnf install python3-tkinter sane-backends img2pdf ImageMagick
 ```
 
-### Debian / Ubuntu
+**Debian / Ubuntu**
 
 ```bash
 sudo apt install python3-tk sane-utils img2pdf imagemagick
 ```
 
-### Arch Linux
+**Arch Linux**
 
 ```bash
 sudo pacman -S tk sane img2pdf imagemagick
 ```
 
-Anschließend das Repository klonen:
+Then clone the repository:
 
 ```bash
-git clone https://github.com/<DEIN-NUTZERNAME>/scan2paperless.git
-cd scan2paperless
+git clone https://github.com/TechnikWeber/sane-linux-scanner-app.git
+cd sane-linux-scanner-app
 ```
 
-## Scanner anschließen und prüfen
+## Connect and check the scanner
 
-Der fi-6130 benötigt sein eigenes Netzteil und **keine** zusätzliche Firmware –
-er läuft direkt über das SANE-`fujitsu`-Backend. Nach dem Anschließen prüfen:
+The fi-6130 needs its own power supply and **no** extra firmware — it runs directly with
+SANE's `fujitsu` backend. After connecting it, check:
 
 ```bash
 scanimage -L
 ```
 
-Erscheint dort dein Scanner (z. B. `fujitsu:fi-6130dj:...`), ist alles bereit.
-Falls nicht, siehe [Fehlerbehebung](#fehlerbehebung).
+If your scanner shows up there (e.g. `fujitsu:fi-6130dj:...`), everything is ready. If not,
+see [Troubleshooting](#troubleshooting).
 
-## Benutzung
+## Usage
 
 ```bash
 python3 scan2paperless_gui.py
 ```
 
-1. Oben bei **Scanner** auf „Suchen" klicken — das Programm liest die
-   Fähigkeiten des Geräts aus und füllt Quelle, Modus und Auflösung passend.
-2. Unter **Ziel** den Paperless-Consume-Ordner auswählen.
-3. Ein Profil wählen oder die Einstellungen anpassen und mit „Speichern" sichern.
-4. Optional einen **Dokumentnamen** eingeben (gilt nur für den nächsten Scan).
-5. Papier einlegen und auf **Scannen** klicken.
+1. At **Scanner**, click "Suchen" (search) — the app reads the device's capabilities and
+   fills in source, mode and resolution accordingly.
+2. Under **Ziel** (target), choose the Paperless consume folder.
+3. Choose a profile or adjust the settings and save them with "Speichern".
+4. Optionally enter a **document name** (applies to the next scan only).
+5. Load the paper and click **Scannen**.
 
-Das fertige PDF landet im Consume-Ordner; Paperless übernimmt von dort
-automatisch Texterkennung (OCR) und Ablage.
+The finished PDF lands in the consume folder; Paperless takes over text recognition (OCR)
+and filing from there.
 
-### Empfohlene Einstellungen für Paperless
+### Recommended settings for Paperless
 
-Für normale Papierdokumente sind **Graustufen bei 300 dpi** der beste
-Kompromiss aus OCR-Qualität und Dateigröße. „Automatisch zuschneiden" und
-„geraderücken" verbessern die Texterkennung. Farbe lohnt sich nur, wenn die
-Farbe Information trägt (Stempel, Markierungen, Logos, Fotos).
+For normal paper documents, **greyscale at 300 dpi** is the best compromise between OCR
+quality and file size. Automatic cropping and deskewing improve text recognition. Colour is
+only worth it when the colour carries information (stamps, highlighting, logos, photos).
 
-### Zusatzoptionen
+### Extra options
 
-Über das Feld **Zusatzoptionen** lässt sich jede beliebige `scanimage`-Option
-mitgeben, z. B. zur Doppeleinzug-Erkennung. Welche Optionen dein Gerät genau
-kennt, zeigt der Knopf **„Optionen anzeigen"** oder direkt:
+The **Zusatzoptionen** (extra options) field passes any `scanimage` option, e.g. for
+double-feed detection. Which options your device knows is shown by the button **"Optionen
+anzeigen"**, or directly:
 
 ```bash
-scanimage -A -d '<deine-geräte-kennung>'
+scanimage -A -d '<your-device-id>'
 ```
 
-## Konfiguration
+## Configuration
 
-Alle Einstellungen und Profile werden gespeichert unter:
+All settings and profiles are stored in:
 
 ```
 ~/.config/scan2paperless/config.json
 ```
 
-## Kompatibilität
+## Compatibility
 
-Das Programm ruft `scanimage` auf und funktioniert daher mit jedem
-SANE-unterstützten Scanner. Optionen wie `swcrop`, `swdeskew`, `swdespeck`
-und `swskip` gehören zum Fujitsu/Ricoh-Backend und werden bei anderen
-Scannern automatisch ausgegraut. Innerhalb der Fujitsu-fi-Reihe
-(fi-6140, fi-6240, fi-7160, iX500 …) läuft es praktisch identisch.
+The app calls `scanimage` and therefore works with every SANE-supported scanner. Options
+such as `swcrop`, `swdeskew`, `swdespeck` and `swskip` belong to the Fujitsu/Ricoh backend
+and are greyed out automatically for other scanners. Within the Fujitsu fi series (fi-6140,
+fi-6240, fi-7160, iX500 …) it works practically the same.
 
-## Fehlerbehebung
+## Troubleshooting
 
-**Scanner wird von `scanimage -L` nicht gefunden, aber `lsusb` zeigt ihn:**
-einmal ab- und wieder anmelden (Geräterechte werden beim Login gesetzt) und
-prüfen, dass in `/etc/sane.d/dll.conf` die Zeile `fujitsu` nicht auskommentiert
-ist.
+**`scanimage -L` does not find the scanner, but `lsusb` shows it:** log out and back in once
+(device permissions are set at login) and check that the line `fujitsu` is not commented
+out in `/etc/sane.d/dll.conf`.
 
-**`lsusb` zeigt den Scanner gar nicht / „Cannot enable, maybe the USB cable is
-bad":** meist ein Kabel- oder Port-Problem. Anderes (kurzes) USB-Kabel und
-einen anderen Port direkt am Rechner (kein Hub) probieren, Scanner-Netzteil
-prüfen. Mit `sudo dmesg -w` beim Ein-/Ausstecken kontrollieren, ob ein Eintrag
-mit `idVendor=04c5` erscheint.
+**`lsusb` does not show the scanner at all / "Cannot enable, maybe the USB cable is bad":**
+usually a cable or port problem. Try another (short) USB cable and another port directly on
+the computer (no hub), check the scanner's power supply. Watch `sudo dmesg -w` while
+plugging in and out for an entry with `idVendor=04c5`.
 
-**Seiten stehen auf dem Kopf:** entweder den Papierstapel andersherum einlegen
-oder im Programm „Seiten drehen" mit 180° aktivieren.
+**Pages are upside down:** either load the stack the other way round or enable "rotate
+pages" by 180° in the app.
 
-**Leere Rückseiten im Duplex-Modus:** „Leerseiten überspringen (swskip)"
-aktivieren oder bei einseitigen Dokumenten die Quelle „ADF Front" wählen.
+**Blank backs in duplex mode:** enable "skip blank pages (swskip)", or choose the source
+"ADF Front" for single-sided documents.
 
-## Geplant
+## Planned
 
-- Seitenvorschau vor dem Ablegen
+- Page preview before filing
 
-## Lizenz
+## License
 
 [MIT](LICENSE).
