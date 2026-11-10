@@ -671,7 +671,8 @@ class ScanApp:
             (self.vars["compress_color"].get() and self.vars["mode"].get() == "Color")
         if need_im and not has_imagemagick():
             messagebox.showerror("Fehler", "ImageMagick fehlt (für Drehen/Komprimieren).\n"
-                                           "'sudo dnf install ImageMagick' oder Optionen abschalten.")
+                                           "Fedora: 'sudo dnf install ImageMagick', Debian/Ubuntu: "
+                                           "'sudo apt install imagemagick' – oder Optionen abschalten.")
             return
 
         self.save_config()
