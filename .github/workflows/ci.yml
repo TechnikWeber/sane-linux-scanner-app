@@ -1,0 +1,25 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  rpm:
+    # builds and installs the RPM on real Fedora, then opens the window on Xvfb
+    runs-on: ubuntu-latest
+    container: registry.fedoraproject.org/fedora:45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build RPM
+        run: packaging/rpm/build.sh
+      - name: Install and start
+        run: |
+          dnf install -y dist/*.noarch.rpm xorg-x11-server-Xvfb
+          scan2paperless --version
+          xvfb-run -a scan2paperless --selftest
+      - name: ShellCheck
+        run: |
+          dnf install -y -q ShellCheck
+          shellcheck packaging/rpm/build.sh

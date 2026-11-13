@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.technikweber.scan2paperless</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+  <name>scan2paperless</name>
+  <summary>Scan documents and hand them to Paperless</summary>
+  <description>
+    <p>
+      A lean scanning app for SANE scanners: it scans from the feeder or the
+      flatbed, turns the pages into a PDF and drops it straight into the
+      Paperless-ngx consume folder. It reads the options the scanner offers
+      and hides what it does not support. Driverless eSCL/AirScan (also over
+      USB with ipp-usb) and vendor backends such as Brother brscan5 or
+      Fujitsu work side by side. The interface is in German.
+    </p>
+  </description>
+  <launchable type="desktop-id">scan2paperless.desktop</launchable>
+  <url type="homepage">https://github.com/TechnikWeber/sane-linux-scanner-app</url>
+  <url type="bugtracker">https://github.com/TechnikWeber/sane-linux-scanner-app/issues</url>
+  <developer id="io.github.technikweber">
+    <name>Philipp Weber</name>
+  </developer>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="2.0.0" date="2026-11-13"/>
+  </releases>
+</component>

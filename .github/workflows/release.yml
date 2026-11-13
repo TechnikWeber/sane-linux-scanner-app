@@ -1,0 +1,51 @@
+name: release
+
+# Tag v1.2.3 -> GitHub release with the RPM.
+# "Run workflow" by hand builds it as an artifact only.
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  rpm:
+    runs-on: ubuntu-latest
+    container: registry.fedoraproject.org/fedora:45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build RPM
+        run: packaging/rpm/build.sh
+      - name: Install and start
+        run: |
+          dnf install -y dist/*.noarch.rpm xorg-x11-server-Xvfb
+          xvfb-run -a scan2paperless --selftest
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rpm
+          path: dist/*.noarch.rpm
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [rpm]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Checksums
+        run: cd dist && sha256sum -- * > SHA256SUMS && cat SHA256SUMS
+      - name: Release notes from CHANGELOG.md
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          awk -v v="$version" '$0 ~ "^## \\[?"v"\\]?" {f=1; next} /^## / {f=0} f' CHANGELOG.md > notes.md
+          cat notes.md
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --notes-file notes.md dist/*

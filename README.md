@@ -1,6 +1,9 @@
 # scan2paperless
 
 <p>
+  <img alt="Status: stable" src="https://img.shields.io/badge/status-stable-brightgreen">
+  <a href="https://github.com/TechnikWeber/sane-linux-scanner-app/releases/latest"><img alt="Download" src="https://img.shields.io/github/v/release/TechnikWeber/sane-linux-scanner-app?label=download&color=2ea44f"></a>
+  <a href="https://github.com/TechnikWeber/sane-linux-scanner-app/actions/workflows/ci.yml"><img alt="Build" src="https://img.shields.io/github/actions/workflow/status/TechnikWeber/sane-linux-scanner-app/ci.yml?branch=main&label=build"></a>
   <img alt="Platform: Linux" src="https://img.shields.io/badge/platform-Linux-blue">
   <img alt="Python 3 + Tkinter" src="https://img.shields.io/badge/python-3%20%2B%20Tkinter-informational">
   <img alt="UI language: German" src="https://img.shields.io/badge/UI-Deutsch-informational">
@@ -9,8 +12,8 @@
 
 A lean graphical scanning app for Linux: it scans documents through any SANE scanner,
 turns them into a PDF and drops it straight into the **Paperless(-ngx)** consume folder.
-Developed and tested with a **Fujitsu fi-6130**, but it works with every scanner SANE
-supports.
+Developed with a **Fujitsu fi-6130** and a **Brother ADS-4300N**, it works with every
+scanner SANE supports, including driverless eSCL / AirScan devices.
 
 The app detects automatically which options the connected scanner offers and hides
 functions it does not support.
@@ -26,44 +29,44 @@ functions it does not support.
 - Rotate pages (90/180/270°) and optionally compress colour scans as JPEG
 - Profiles for different presets (e.g. "document greyscale" vs. "colour duplex")
 - Document name → becomes the file name and with that the title suggestion in Paperless
+- **Erweiterte Optionen** (advanced options): every option the scanner reports that the
+  main window does not cover, saved per profile
+- **Treiber & Backends** (drivers and backends): shows which backend is in use, checks
+  and installs ipp-usb (driverless scanning over USB), helps set up Brother brscan5 and
+  writes a script for the scan button on the device (brscan-skey)
 - Free field for any additional `scanimage` options
-- Start menu entry (.desktop) with one click
 
 The interface is in German.
 
-## Requirements
-
-- Python 3 with Tkinter
-- SANE (`scanimage`)
-- `img2pdf`
-- ImageMagick — only needed for rotating or compressing
-
 ## Installation
 
-**Fedora**
+**Fedora:** download `scan2paperless-*.noarch.rpm` from the
+[latest release](https://github.com/TechnikWeber/sane-linux-scanner-app/releases/latest) and
 
 ```bash
-sudo dnf install python3-tkinter sane-backends img2pdf ImageMagick
+sudo dnf install ./scan2paperless-*.noarch.rpm
 ```
 
-**Debian / Ubuntu**
+It pulls in SANE, `img2pdf` and Tkinter, recommends ImageMagick and sane-airscan, and
+adds **Scan zu Paperless** to the application menu. From a terminal: `scan2paperless`.
+`sudo dnf remove scan2paperless` takes it away again; your settings stay in
+`~/.config/scan2paperless`.
 
-```bash
-sudo apt install python3-tk sane-utils img2pdf imagemagick
-```
+**Other distributions:** install the requirements, then run the script from a clone.
 
-**Arch Linux**
-
-```bash
-sudo pacman -S tk sane img2pdf imagemagick
-```
-
-Then clone the repository:
+| Distribution | Requirements |
+|---|---|
+| Debian / Ubuntu | `sudo apt install python3-tk sane-utils img2pdf imagemagick sane-airscan` |
+| Arch Linux | `sudo pacman -S tk sane img2pdf imagemagick sane-airscan` |
 
 ```bash
 git clone https://github.com/TechnikWeber/sane-linux-scanner-app.git
 cd sane-linux-scanner-app
+python3 scan2paperless_gui.py
 ```
+
+The button **Startmenü-Eintrag** in the app adds a menu entry pointing to the clone.
+ImageMagick is only needed for rotating or compressing.
 
 ## Connect and check the scanner
 
@@ -77,11 +80,15 @@ scanimage -L
 If your scanner shows up there (e.g. `fujitsu:fi-6130dj:...`), everything is ready. If not,
 see [Troubleshooting](#troubleshooting).
 
+Network scanners such as the Brother ADS-4300N show up driverless as `airscan:...` with
+sane-airscan; over USB they need `ipp-usb` (the app's **Treiber & Backends** window
+installs it). Brother's own driver brscan5 adds a second entry `brother5:...` with extra
+functions; both can be installed side by side, pick one at **Scanner**.
+
 ## Usage
 
-```bash
-python3 scan2paperless_gui.py
-```
+Start **Scan zu Paperless** from the menu (or `scan2paperless`, or
+`python3 scan2paperless_gui.py` in the clone).
 
 1. At **Scanner**, click "Suchen" (search) — the app reads the device's capabilities and
    fills in source, mode and resolution accordingly.

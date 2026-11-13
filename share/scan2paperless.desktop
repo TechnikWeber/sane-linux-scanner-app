@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Scan to Paperless
+Name[de]=Scan zu Paperless
+Comment=Scan documents and hand them to Paperless
+Comment[de]=Dokumente scannen und an Paperless übergeben
+Exec=scan2paperless
+Icon=scanner
+Terminal=false
+Categories=Office;Scanning;Graphics;
+Keywords=scan;scanner;sane;paperless;pdf;document;
+Keywords[de]=scannen;scanner;sane;paperless;pdf;dokument;
